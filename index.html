@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#263d38"><meta name="robots" content="noindex,nofollow">
+<title>إنجاز بناتي</title><link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f1e9;color:#293932;font-family:Tahoma,Arial,sans-serif;line-height:1.6}main{max-width:520px;margin:auto;padding:16px 14px 32px}header{background:linear-gradient(145deg,#183832,#36584e);color:#f9e7c5;border:1px solid #bc9a63;border-radius:24px;padding:25px;text-align:center;box-shadow:0 8px 24px #27392f18}header small{letter-spacing:1px;color:#e8d7b8}h1{font-size:29px;margin:4px 0}header p{margin:0;color:#e2e9df;font-size:13px}button,input{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{cursor:default;opacity:.45}.tabs{display:flex;gap:7px;margin:18px 0}.tabs button{flex:1;border:1px solid #ded7cb;background:#fff;border-radius:14px;padding:12px 5px;color:#484c45;font-weight:bold}.tabs button.active{background:var(--accent);color:white;border-color:var(--accent)}.panel{background:#fffdf8;border:1px solid #e4ded0;border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 4px 16px #463e2810}.summary{text-align:center}.ring{display:grid;place-items:center;width:142px;height:142px;margin:8px auto 12px;border-radius:50%;background:conic-gradient(var(--accent) var(--percent),#e9e5dc 0);position:relative}.ring:before{content:"";position:absolute;inset:11px;background:#fffdf8;border-radius:50%}.ring>div{position:relative}.ring strong{display:block;font-size:33px;color:var(--accent);line-height:1.3}.muted{color:#696d61;font-size:13px}.date{font-size:13px;color:#686c62}.task{border-bottom:1px solid #eee7da;padding:12px 0}.task:last-child{border:0;padding-bottom:0}.task h3{font-size:15px;margin:0 0 8px}.choices{display:flex;gap:6px}.choices button{flex:1;font-size:13px;font-weight:bold;border-radius:11px;padding:10px 3px;background:#fff;border:1px solid #dcd9ce;color:#465047}.choices button[data-v=yes].selected{background:#d9eee2;border-color:#34714d;color:#225739}.choices button[data-v=no].selected{background:#fbe4e4;border-color:#aa535c;color:#8f3441}.choices button[data-v=skip].selected{background:#e9e8e4;border-color:#76796f;color:#45483e}.choices button:focus-visible,.tabs button:focus-visible,button:focus-visible{outline:3px solid #b89554;outline-offset:2px}.primary,.secondary,.tertiary{width:100%;padding:13px 10px;border-radius:14px;font-weight:bold;margin-top:8px;border:1px solid transparent}.primary{background:#246d49;color:white}.secondary{background:#fff;color:#2c5141;border-color:#bdc9bd}.tertiary{background:transparent;color:#6a6c62;border-color:#dedbd2}.preview{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8;font-size:14px;background:#edf5ea;border-radius:14px;padding:13px;margin:10px 0 0}.note{font-size:12px;color:#77796f;text-align:center;margin:10px 0 0}label{font-size:13px}.status{font-size:13px;color:#35634a;text-align:center;margin:8px 0}footer{text-align:center;color:#797b70;font-size:12px;margin-top:18px}details summary{cursor:pointer;font-size:13px;color:#48634f}.edit{display:flex;align-items:center;gap:8px;margin:8px 0}.edit input{width:100%;min-width:0;border:1px solid #ddd7ca;border-radius:10px;padding:7px;background:white;color:#293932}
+</style></head>
+<body><main>
+<header><small>خطوة صغيرة كل يوم</small><h1>إنجاز بناتي ✦</h1><p>بطاقة المتابعة اليومية • بدون حسابات أو مزامنة</p></header>
+<div id="tabs" class="tabs" role="group" aria-label="اختيار البنت"></div>
+<section class="panel summary"><div id="date" class="date"></div><div class="ring" id="ring" role="img" aria-label="مؤشر الإنجاز"><div><strong id="percent">—</strong><span id="name" class="muted"></span></div></div><div id="count" class="muted" aria-live="polite"></div></section>
+<section class="panel" id="tasks" aria-label="المهام اليومية"></section>
+<section class="panel"><div id="status" class="status" aria-live="polite"></div><details id="previewBox"><summary>معاينة رسالة الواتساب</summary><div class="preview" id="preview"></div></details><button class="primary" id="send" disabled>إرسال مؤشر الإنجاز عبر واتساب</button><button class="secondary" id="copy" disabled>نسخ الرسالة</button><button class="secondary" id="next" disabled>تم الإرسال — بطاقة جديدة</button><button class="tertiary" id="reset">مسح البطاقة الحالية</button><p class="note">بعد إرسال الرسالة فعلًا، ارجع إلى البطاقة واضغط «تم الإرسال». لا يستطيع الموقع معرفة حالة الإرسال داخل واتساب.</p></section>
+<details class="panel"><summary>إعداد الأسماء على هذا الجهاز</summary><p class="muted">يمكن تعديل الأسماء محليًا دون نشرها أو مزامنتها.</p><div id="names"></div></details>
+<footer>لا تُحفظ النتائج كسجل • تُحذف مسودة البطاقة بعد تأكيد الإرسال</footer>
+</main>
+<script>
+'use strict';
+const profiles=[
+{color:'#a04c72',tasks:['مذاكرة المدرسة','مراجعة القدرات أو حضور المعهد','التمارين الرياضية','الالتزام بوقت الجوال','الالتزام بموعد النوم']},
+{color:'#247d78',tasks:['الواجبات المدرسية','مراجعة الاختبارات المركزية','التمارين الرياضية المناسبة','الالتزام بوقت الجوال','الالتزام بموعد النوم']},
+{color:'#687e3e',tasks:['المذاكرة والواجبات','مراجعة الإنجليزية','انتظام الوجبات','تنظيم وقت الترفيه','الالتزام بموعد النوم']}
+];
+const $=id=>document.getElementById(id);
+const read=(key,fallback,storage)=>{try{return JSON.parse(storage().getItem(key))??fallback}catch(e){return fallback}};
+const write=(key,val,storage)=>{try{storage().setItem(key,JSON.stringify(val))}catch(e){}};
+const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const blank=()=>Array(5).fill(null);
+let names=read('girls-table-names',['جنى','جمانة','حكمة'],()=>localStorage);
+if(!Array.isArray(names)||names.length!==3||names.some(x=>typeof x!=='string'))names=['جنى','جمانة','حكمة'];
+let day=today(),state=read('girls-table-draft',{day,index:0,answers:profiles.map(blank),opened:false},()=>sessionStorage);
+function valid(s){return s&&s.day===day&&Number.isInteger(s.index)&&s.index>=0&&s.index<3&&Array.isArray(s.answers)&&s.answers.length===3&&s.answers.every(a=>Array.isArray(a)&&a.length===5&&a.every(v=>[null,'yes','no','skip'].includes(v)))}
+if(!valid(state))state={day,index:0,answers:profiles.map(blank),opened:false};
+const save=()=>write('girls-table-draft',state,()=>sessionStorage);
+const ar=n=>String(n).replace(/\d/g,x=>'٠١٢٣٤٥٦٧٨٩'[Number(x)]);
+const formatDate=()=>new Intl.DateTimeFormat('ar-SA',{calendar:'gregory',timeZone:'Asia/Riyadh',weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
+function calculate(a){const yes=a.filter(v=>v==='yes').length,no=a.filter(v=>v==='no').length,skip=a.filter(v=>v==='skip').length;return{yes,no,skip,count:yes+no+skip,complete:yes+no+skip===5,score:yes+no?Math.round(yes*100/(yes+no)):null}}
+function message(){const i=state.index,a=state.answers[i],r=calculate(a);return ['🌷 بطاقة الإنجاز اليومية | '+names[i], '📅 '+formatDate(),'',
+...profiles[i].tasks.map((t,j)=>({yes:'✅',no:'❌',skip:'➖',null:'◻️'}[a[j]])+' '+t),'',
+'مؤشر الإنجاز: '+(r.score===null?'لا توجد مهام محتسبة':ar(r.score)+'٪'),
+...(r.score===null?[]:[Array.from({length:10},(_,j)=>j<Math.round(r.score/10)?'🟩':'⬜').join('')]),
+'المنجز: '+ar(r.yes)+' من '+ar(r.yes+r.no)+' مهام محتسبة', ...(r.skip?['المعذورة: '+ar(r.skip)]:[])].join('\n')}
+function button(text,handler){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',handler);return b}
+function draw(){const i=state.index,p=profiles[i],a=state.answers[i],r=calculate(a);document.documentElement.style.setProperty('--accent',p.color);$('date').textContent=formatDate();$('name').textContent=names[i];$('percent').textContent=r.score===null?'—':ar(r.score)+'٪';$('ring').style.setProperty('--percent',(r.score||0)+'%');$('ring').setAttribute('aria-label','مؤشر الإنجاز '+$('percent').textContent);$('count').textContent='تم تقييم '+ar(r.count)+' من ٥ مهام'+(r.skip?' • معذورة: '+ar(r.skip):'');
+$('tabs').replaceChildren(...names.map((name,j)=>{const b=button(name,()=>{state.index=j;state.opened=false;save();draw()});b.classList.toggle('active',i===j);b.setAttribute('aria-pressed',String(i===j));return b}));
+$('tasks').replaceChildren(...p.tasks.map((t,j)=>{const box=document.createElement('div');box.className='task';const h=document.createElement('h3');h.textContent=ar(j+1)+'. '+t;box.append(h);const choices=document.createElement('div');choices.className='choices';choices.setAttribute('role','group');choices.setAttribute('aria-label',t);for(const [v,label] of [['yes','✓ تم'],['no','✕ لم يتم'],['skip','معذورة']]){const b=button(label,()=>{state.answers[i][j]=v;state.opened=false;save();draw()});b.dataset.v=v;b.classList.toggle('selected',a[j]===v);b.setAttribute('aria-pressed',String(a[j]===v));choices.append(b)}box.append(choices);return box}));
+$('send').disabled=!r.complete;$('copy').disabled=!r.complete;$('next').disabled=!r.complete||!state.opened;$('preview').textContent=message();$('status').textContent=state.opened?'بعد الإرسال الفعلي اضغط «تم الإرسال — بطاقة جديدة».':r.complete?'البطاقة جاهزة للإرسال':'أكمل تقييم المهام الخمس لتفعيل الإرسال.'}
+$('send').addEventListener('click',()=>{if(!calculate(state.answers[state.index]).complete)return;state.opened=true;save();draw();location.href='https://wa.me/?text='+encodeURIComponent(message())});
+$('copy').addEventListener('click',async()=>{if(!calculate(state.answers[state.index]).complete)return;try{await navigator.clipboard.writeText(message());state.opened=true;save();draw();$('status').textContent='تم النسخ؛ الصق الرسالة في واتساب ثم أكد الإرسال.'}catch(e){$('previewBox').open=true;$('status').textContent='لم يُسمح بالنسخ التلقائي. حدد نص المعاينة وانسخه يدويًا.'}});
+$('next').addEventListener('click',()=>{if(!state.opened||!calculate(state.answers[state.index]).complete)return;if(!confirm('هل أرسلت الرسالة بالفعل؟ ستُمسح هذه البطاقة.'))return;state.answers[state.index]=blank();state.index=(state.index+1)%3;state.opened=false;save();draw();$('previewBox').open=false;window.scrollTo(0,0)});
+$('reset').addEventListener('click',()=>{if(!confirm('مسح إجابات البطاقة الحالية؟'))return;state.answers[state.index]=blank();state.opened=false;save();draw()});
+names.forEach((n,i)=>{const row=document.createElement('label');row.className='edit';const txt=document.createElement('span');txt.textContent=ar(i+1);const input=document.createElement('input');input.value=n;input.maxLength=24;input.setAttribute('aria-label','اسم البنت '+ar(i+1));input.addEventListener('change',()=>{names[i]=input.value.trim()||n;input.value=names[i];write('girls-table-names',names,()=>localStorage);draw()});row.append(txt,input);$('names').append(row)});
+window.addEventListener('pageshow',()=>{if(today()!==day){day=today();state={day,index:0,answers:profiles.map(blank),opened:false};save()}draw()});draw();
+</script></body></html>
